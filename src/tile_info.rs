@@ -55,8 +55,7 @@ impl FromStr for PageInfo {
         ).ok_or(PageParseError::NoPath)?.to_string();
 
         let path_no_protocol = path.split(':')
-            .skip(1)
-            .next().ok_or(PageParseError::BadPath)?;
+            .nth(1).ok_or(PageParseError::BadPath)?;
         let before_token = format!(",\"{}\",\"", path_no_protocol);
         let token = extract_between(s, &before_token, "\"")
             .ok_or(PageParseError::NoToken)?.to_string();

@@ -55,7 +55,7 @@ pub fn decrypt(encrypted: Vec<u8>) -> Result<Vec<u8>, InvalidEncryptedImage> {
     }
     let mut encrypted = Vec::new();
     c = read_size(c, &mut encrypted, encrypted_size)?;
-    decrypted.write(aes_decrypt_buffer(&mut encrypted)?)?;
+    decrypted.write_all(aes_decrypt_buffer(&mut encrypted)?)?;
 
     let footer_size = end_position - encrypted_size - 4 - header_size - 4;
     read_size(c, &mut decrypted, footer_size)?;
