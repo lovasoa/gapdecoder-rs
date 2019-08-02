@@ -37,9 +37,16 @@ pub struct PageInfo {
     token: String,
 }
 
+impl PageInfo{
+    fn tile_info_url(&self) -> String {
+        self.path.clone() + "=g"
+    }
+}
+
 impl FromStr for PageInfo {
     type Err = PageParseError;
 
+    /// Parses a google arts project HTML page
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let path = extract_between(
             s,
@@ -110,5 +117,6 @@ mod tests {
         let info: PageInfo = test_html.parse().unwrap();
         assert_eq!(info.path, "https://lh5.ggpht.com/4AX4ua174encReZyEE7dTu0_RgBrBi79iqHamKQJtZnIBA5xqKBQib8DNvnq");
         assert_eq!(info.token, "RQhR1krE-uvCYNXm5CmP6k2MuPY");
+        assert_eq!(info.tile_info_url(), "https://lh5.ggpht.com/4AX4ua174encReZyEE7dTu0_RgBrBi79iqHamKQJtZnIBA5xqKBQib8DNvnq=g");
     }
 }
