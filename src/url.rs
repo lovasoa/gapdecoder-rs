@@ -27,8 +27,12 @@ pub fn compute_url<T, U>(path: T, token: U, x: u32, y: u32, z: u32) -> String
     sign_path.extend_from_slice(token.as_ref().as_bytes());
 
     let digest = mac_digest(&sign_path);
-    base64::encode_config_buf(&digest, base64::URL_SAFE_NO_PAD, &mut url);
+    url.push_str(&custom_base64(&digest));
     url
+}
+
+fn custom_base64(digest: &[u8]) -> String {
+    base64::encode_config(digest, base64::URL_SAFE_NO_PAD).replace('-', "_")
 }
 
 fn mac_digest(b: &[u8]) -> Vec<u8> {
